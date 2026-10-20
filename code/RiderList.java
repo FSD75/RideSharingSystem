@@ -1,1 +1,7 @@
-public class RiderList 
+public class RiderList<Rider> implements IRiderList{
+
+  
+
+
+
+}
