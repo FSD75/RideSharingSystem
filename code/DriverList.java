@@ -33,8 +33,15 @@ public class DriverList implements IDriverList{
         return true;
       }
       
-      drivers.findNext(); 
+      if(drivers.last()){
+        drivers.insert(driver);
+        count++;
+        return true;
+      }
+        
+      drivers.findNext();
    }
+    
     return false;
   }
 
@@ -48,6 +55,9 @@ public class DriverList implements IDriverList{
       if(drivers.retrieve().getId() == driverId){
         return drivers.retrieve();
       }
+      if(drivers.last())
+        return null;
+      
       drivers.findNext();
     }
     return null;
