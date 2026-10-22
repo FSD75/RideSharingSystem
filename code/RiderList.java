@@ -1,185 +1,190 @@
-public class RiderList implements IRiderList{
 
-  private LinkedList<IRider> riders;
-  private int count;
+public class RideList implements IRideList {
 
-  public RiderList(){
-    riders = new LinkedList<IRider>();
-    count = 0;
-  }
+    private LinkedList<IRide> rides;
 
-  public boolean add(IRider rider){
-    if(rider == null || findByEmail(rider.getEmail()) != null)
-     return false;
-    
-    if(riders.empty()){
-      riders.insert(rider);
-      count++;
-      return true;
-    }
-    
-    Node<IRider> tmp = null;
-    riders.findFirst();
-
-    while(riders.current != null && riders.cuurent.data.compareTo(rider) == -1){
-       tmp = riders.current;
-       riders.findNext();
-     }
-
-    if(riders.current != null && riders.current.data.compareTo(rider) == 0)
-     return false;
-
-    if(tmp == null){
-     tmp = riders.current;
-     riders.insert(rider);
-     tmp.next = riders.current.next;
-     riders.current.next = riders.head;
-     riders.head = riders.current;
-   }
-     
-    else{
-     riders.current = tmp;
-     riders.insert(rider);
-   }
-    
-    count++;
-    return true;
-}
-
-  public IRider findById(int riderId){
-    if(riders.empty())
-      return null;
-    
-    riders.findFirst();
-    while(riders.current != null){
-      if(riders.current.data.getId() == riderId){
-        return riders.current.data;
-      }
-      riders.findNext();
-    }
-    return null;
-  }
-
-  public LinkedList<IRider> findByName(String fullName){
-    LinkedList<IRider> nameList = new LinkedList<IRider>();
-    
-    if(riders.empty() || fullName == null)
-      return nameList;
-    
-    riders.findFirst();
-
-    while(riders.current != null){
-      if(fulName.equals(riders.current.data.getName())){
-        nameList.insert(riders.current.data);
-      }
-      riders.findNext();
+    public RideList() {
+        rides = new LinkedList<IRide>();
     }
 
-    return nameList;
-  }
+    public boolean addRide(IRide ride) {
+        if (ride == null)
+            return false;
 
-  public IRider findByEmail(String email){
-    if(riders.empty() || email == null)
-      return null;
+        LinkedList<IRide> result = new LinkedList<IRide>();
+        boolean added = false;
 
-    riders.findFirst();
-    
-    while(riders.current != null){
-      if(email.equals(riders.current.data.getEmail())){
-        return riders.current.data;
-      }
-      riders.findNext();
+        if (!rides.empty()) {
+            rides.findFirst();
+
+            while (true) {
+                IRide current = rides.retrieve();
+
+                if (!added && ride.compareTo(current) < 0) {
+                    result.insert(ride);
+                    added = true;
+                }
+
+                result.insert(current);
+
+                if (rides.last())
+                    break;
+
+                rides.findNext();
+            }
+        }
+
+        if (!added)
+            result.insert(ride);
+
+        rides = result;
+        return true;
     }
-    return null;
-  }
 
-  public LinkedList<IRider> findByHomeCity(Strimg homeCity){
-    LinkedList<IRider> cityList = new LinkedList<IRider>();
-    
-    if(riders.empty() || homeCity == null)
-      return cityList;
-    
-    riders.findFirst();
-    
-    while(riders.current != null){
-      if(homeCity.equals(riders.current.data.getHomeCity())){
-        cityList.insert(riders.current.data);
-      }
-      riders.findNext();
+    public boolean removeRideById(int rideId) {
+        LinkedList<IRide> result = new LinkedList<IRide>();
+        boolean removed = false;
+
+        if (rides.empty())
+            return false;
+
+        rides.findFirst();
+
+        while (true) {
+            IRide ride = rides.retrieve();
+
+            if (!removed && ride.getRideId() == rideId) {
+                removed = true;
+            } else {
+                result.insert(ride);
+            }
+
+            if (rides.last())
+                break;
+
+            rides.findNext();
+        }
+
+        rides = result;
+        return removed;
     }
-    return cityList;
-  }
 
-  public LinkedList<IRider> getAll(){
-    return riders;
-  }
+    public LinkedList<IRide> getAllAlphabetically() {
+        LinkedList<IRide> result = new LinkedList<IRide>();
 
-  public boolean removeById(int riderId){
-    if(findById(riderId) == null)
-      return false;
+        if (rides.empty())
+            return result;
 
-    riders.remove();
-    count--;
-    return true;
-  }
+        rides.findFirst();
 
-  public boolean removeByEmail(String email){
-    if(findByEmail(email) == null)
-      return false;
+        while (true) {
+            result.insert(rides.retrieve());
 
-    riders.remove();
-    count--;
-    return true;
-  }
+            if (rides.last())
+                break;
 
-  public int removeByName(String fullName){
-    int num = 0;
-    if(riders.empty() || fullName == null)
-      return num;
+            rides.findNext();
+        }
 
-    boolean isRemoved = false;
-    riders.findFirst();
-    
-    while(riders.current != null){
-      if(fullName.equals(riders.current.data.getName())){
-        riders.remove();
-        isRemoved = true;
-        count--;
-        num++;
-      }
-      if(!isRemoved)
-        riders.findNext();
-      isRemoved = false;
+        return result;
     }
-    return num;
-  }
 
-  public int removeByHomeCity(String homeCity){
-    int num = 0;
-    if(riders.empty() || homeCity == null)
-      return num;
+    public LinkedList<IRide> findByPickupLocation(
+            String pickupLocation) {
 
-    boolean isRemoved = false;
-    riders.findFirst();
-    
-    while(riders.current != null){
-      if(homeCity.equals(riders.current.data.getHomeCity())){
-        riders.remove();
-        isRemoved = true;
-        count--;
-        num++;
-      }
-      if(!isRemoved)
-        riders.findNext();
-      isRemoved = false;
+        LinkedList<IRide> result = new LinkedList<IRide>();
+
+        if (rides.empty())
+            return result;
+
+        rides.findFirst();
+
+        while (true) {
+            IRide ride = rides.retrieve();
+
+            if (ride.getPickupLocation().equals(pickupLocation))
+                result.insert(ride);
+
+            if (rides.last())
+                break;
+
+            rides.findNext();
+        }
+
+        return result;
     }
-    return num;
-  }
 
-  public int size(){
-    return count;
-  }
+    public LinkedList<IRide> findByRiderName(String riderFullName) {
+        LinkedList<IRide> result = new LinkedList<IRide>();
 
+        if (rides.empty())
+            return result;
 
-  
+        rides.findFirst();
+
+        while (true) {
+            IRide ride = rides.retrieve();
+            boolean found = false;
+
+            if (ride instanceof IPrivateRide) {
+                IRider rider = ((IPrivateRide) ride).getRider();
+
+                if (rider != null &&
+                    rider.getName().equals(riderFullName)) {
+                    found = true;
+                }
+
+            } else if (ride instanceof ISharedRide) {
+                LinkedList<IRider> participants =
+                    ((ISharedRide) ride).getParticipants();
+
+                if (!participants.empty()) {
+                    participants.findFirst();
+
+                    while (true) {
+                        if (participants.retrieve().getName()
+                                .equals(riderFullName)) {
+                            found = true;
+                            break;
+                        }
+
+                        if (participants.last())
+                            break;
+
+                        participants.findNext();
+                    }
+                }
+            }
+
+            if (found)
+                result.insert(ride);
+
+            if (rides.last())
+                break;
+
+            rides.findNext();
+        }
+
+        return result;
+    }
+
+    public int size() {
+        int count = 0;
+
+        if (rides.empty())
+            return 0;
+
+        rides.findFirst();
+
+        while (true) {
+            count++;
+
+            if (rides.last())
+                break;
+
+            rides.findNext();
+        }
+
+        return count;
+    }
 }
