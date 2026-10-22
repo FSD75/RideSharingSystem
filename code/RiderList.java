@@ -64,7 +64,7 @@ public class RiderList implements IRiderList{
     LinkedList<IRider> nameList = new LinkedList<IRider>();
     
     if(riders.empty() || fullName == null)
-      return null;
+      return nameList;
     
     riders.findFirst();
 
@@ -83,6 +83,7 @@ public class RiderList implements IRiderList{
       return null;
 
     riders.findFirst();
+    
     while(riders.current != null){
       if(email.equals(riders.current.data.getEmail())){
         return riders.current.data;
@@ -93,27 +94,86 @@ public class RiderList implements IRiderList{
   }
 
   public LinkedList<IRider> findByHomeCity(Strimg homeCity){
-
+    LinkedList<IRider> cityList = new LinkedList<IRider>();
+    
+    if(riders.empty() || homeCity == null)
+      return cityList;
+    
+    riders.findFirst();
+    
+    while(riders.current != null){
+      if(homeCity.equals(riders.current.data.getHomeCity())){
+        cityList.insert(riders.current.data);
+      }
+      riders.findNext();
+    }
+    return cityList;
   }
 
   public LinkedList<IRider> getAll(){
-
+    return riders;
   }
 
   public boolean removeById(int riderId){
+    if(findById(riderId) == null)
+      return false;
 
+    riders.remove();
+    count--;
+    return true;
   }
 
   public boolean removeByEmail(String email){
+    if(findByEmail(email) == null)
+      return false;
 
+    riders.remove();
+    count--;
+    return true;
   }
 
-  public int removebyName(String fullName){
+  public int removeByName(String fullName){
+    int num = 0;
+    if(riders.empty() || fullName == null)
+      return num;
 
+    boolean isRemoved = false;
+    riders.findFirst();
+    
+    while(riders.current != null){
+      if(fullName.equals(riders.current.data.getName())){
+        riders.remove();
+        isRemoved = true;
+        count--;
+        num++;
+      }
+      if(!isRemoved)
+        riders.findNext();
+      isRemoved = false;
+    }
+    return num;
   }
 
   public int removeByHomeCity(String homeCity){
+    int num = 0;
+    if(riders.empty() || homeCity == null)
+      return num;
 
+    boolean isRemoved = true;
+    riders.findFirst();
+    
+    while(riders.current != null){
+      if(homeCity.equals(riders.current.data.getHomeCity())){
+        riders.remove();
+        isRemoved = true;
+        count--;
+        num++;
+      }
+      if(!isRemoved)
+        riders.findNext();
+      isRemoved = false;
+    }
+    return num;
   }
 
   public int size(){
