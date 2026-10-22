@@ -9,11 +9,48 @@ public class DriverList implements IDriverList{
   }
 
   public boolean add(IDriver driver){
+    if(driver == null || findByVehiclePlate(driver.getVehiclePlate()) != null)
+      return false;
 
+    if(drivers.empty()){
+      drivers.insert(driver);
+      count++;
+      return true;
+    }
+
+    if(findById(driver.getId()) != null)
+      return false;
+
+    IDriver tmp = null;
+    drivers.findFirst();
+      
+    while(drivers.retrieve() != null){
+      if(drivers.retrieve().getId() > driver.getId()){
+        tmp = drivers.retrieve();
+        drivers.update(driver);
+        drivers.insert(tmp);
+        count++;
+        return true;
+      }
+      
+      drivers.findNext(); 
+   }
+    return false;
   }
 
+  
   public IDriver findById(int driverId){
+    if(drivers.empty())
+      return null;
 
+    drivers.findFirst();
+    while(drivers.retrieve() != null){
+      if(drivers.retrieve().getId() == driverId){
+        return drivers.retrieve();
+      }
+      drivers.findNext();
+    }
+    return null;
   }
 
   public LinkedList<IDriver> findByName(String fullName){
