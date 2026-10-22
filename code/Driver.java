@@ -29,10 +29,10 @@ public class Driver extends Person implements IDriver{
 
   @Override
   public int compareTo(IDriver other){
-    if(getID() > other.getID())
+    if(getId() > other.getId())
       return 1;
 
-    else if(getID() < other.getID())
+    else if(getId() < other.getId())
       return -1;
 
     else
