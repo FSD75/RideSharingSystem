@@ -159,7 +159,7 @@ public class RiderList implements IRiderList{
     if(riders.empty() || homeCity == null)
       return num;
 
-    boolean isRemoved = true;
+    boolean isRemoved = false;
     riders.findFirst();
     
     while(riders.current != null){
