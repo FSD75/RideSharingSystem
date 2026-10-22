@@ -21,7 +21,7 @@ public class RiderList implements IRiderList{
     Node<IRider> tmp = null;
     riders.findFirst();
 
-    while(riders.current != null && riders.cuurent.data.compareTo(rider) == -1){
+    while(riders.current != null && riders.current.data.compareTo(rider) == -1){
        tmp = riders.current;
        riders.findNext();
      }
@@ -69,7 +69,7 @@ public class RiderList implements IRiderList{
     riders.findFirst();
 
     while(riders.current != null){
-      if(fulName.equals(riders.current.data.getName())){
+      if(fullName.equals(riders.current.data.getName())){
         nameList.insert(riders.current.data);
       }
       riders.findNext();
@@ -93,7 +93,7 @@ public class RiderList implements IRiderList{
     return null;
   }
 
-  public LinkedList<IRider> findByHomeCity(Strimg homeCity){
+  public LinkedList<IRider> findByHomeCity(String homeCity){
     LinkedList<IRider> cityList = new LinkedList<IRider>();
     
     if(riders.empty() || homeCity == null)
