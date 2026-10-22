@@ -1,94 +1,106 @@
 public class SharedRide extends Ride implements ISharedRide {
 
-	private LinkedList<IRider> participants;
+    private LinkedList<IRider> participants;
 
-	public SharedRide(int rideId, String pickupLocation, IDateTime pickupTime, IDateTime dropoff, String dropoffLocation, IDriver driver) {
+    public SharedRide(int rideId, String pickupLocation, IDateTime pickupTime, IDateTime dropoffTime, String dropoffLocation, IDriver driver) {
 
-		super(rideId, pickupLocation, pickupTime, dropoffTime, dropoffLocation, driver);
+        super(rideId, pickupLocation, pickupTime, dropoffTime, dropoffLocation, driver);
 
-		participants = new LinkedList<IRider>();
-	}
+        participants = new LinkedList<IRider>();
+    }
 
-	public boolean addParticipant(IRider rider) {
-		if (rider == null || hasRider(rider.getId()))
-			return false;
+    public boolean addParticipant(IRider rider) {
+        if (rider == null || hasRider(rider.getId()))
+            return false;
 
-		if (participants.empty()) {
-			participants.insert(rider);
-			return true;
-		}
-		participants.findFirst();
+        if (participants.empty()) {
+            participants.insert(rider);
+            return true;
+        }
 
-		while (!participants.last())
-			participants.findNext();
+        participants.findFirst();
 
-		participants.insert(rider);
-		return true;
-	}
+        while (!participants.last())
+            participants.findNext();
 
-	public LinkedList<IRider> getParticipants() {
-		return participants;
-	}
+        participants.insert(rider);
+        return true;
+    }
 
-	public  boolean removeParticipantById(int riderId) {
-		Node<IRider> temp = participants.head;
-		Node<IRider> previous = null;
+    public LinkedList<IRider> getParticipants() {
+        return participants;
+    }
 
-		while (temp != null) {
-			if (temp.data.getId() == riderId) {
-				if (previous == null)
-					participants.head = temp.next;
-				else
-					previous.next = temp.next;
+    public boolean removeParticipantById(int riderId) {
+        LinkedList<IRider> result = new LinkedList<IRider>();
+        boolean removed = false;
 
-				if (participants.current == temp)
-					participants.current = temp.next;
+        if (participants.empty())
+            return false;
 
-				return true;
-			}
+        participants.findFirst();
 
-			previous = temp;
-			temp = temp.next;
-		}
+        while (true) {
+            IRider rider = participants.retrieve();
 
-		return false;
-	}
+            if (!removed && rider.getId() == riderId) {
+                removed = true;
+            } else {
+                result.insert(rider);
+            }
 
-	public 	boolean isEmpty() {
-		return participants.empty();
-	}
+            if (participants.last())
+                break;
 
-	public boolean hasRider(int riderId) {
-		Node<IRider> temp = participants.head;
+            participants.findNext();
+        }
 
-		while	 (temp != null) {
-			if (temp.data.getId() == riderId)
-				return true;
+        participants = result;
+        return removed;
+    }
 
-			temp = temp.next;
-		}
+    public boolean isEmpty() {
+        return participants.empty();
+    }
 
-		return false;
-	}
+    public boolean hasRider(int riderId) {
+        if (participants.empty())
+            return false;
 
-	@Override
-	public	 String toString() {
-		String str = "Shared " + super.toString() + ", Participants: ";
+        participants.findFirst();
 
-		if (participants.empty())
-			return str + "None";
+        while (true) {
+            if (participants.retrieve().getId() == riderId)
+                return true;
 
-		Node<IRider> temp = participants.head;
+            if (participants.last())
+                break;
 
-		while (temp != null) {
-			str += temp.data.getName();
+            participants.findNext();
+        }
 
-			if (temp.next != null)
-				str += ", ";
+        return false;
+    }
 
-			temp = temp.next;
-		}
+    @Override
+    public String toString() {
+        String str = "Shared " + super.toString() + ", Participants: ";
 
-		return str;
-	}
+        if (participants.empty())
+            return str + "None";
+
+        participants.findFirst();
+
+        while (true) {
+            str += participants.retrieve().getName();
+
+            if (participants.last())
+                break;
+
+            str += ", ";
+            participants.findNext();
+        }
+
+        return str;
+    }
 }
