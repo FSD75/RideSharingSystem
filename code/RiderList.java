@@ -13,7 +13,6 @@ public class RiderList implements IRiderList{
      return false;
     
     if(riders.empty()){
-      riders.findFirst();
       riders.insert(rider);
       count++;
       return true;
@@ -48,15 +47,49 @@ public class RiderList implements IRiderList{
 }
 
   public IRider findById(int riderId){
-
+    if(riders.empty())
+      return null;
+    
+    riders.findFirst();
+    while(riders.current != null){
+      if(riders.current.data.getId() == riderId){
+        return riders.current.data;
+      }
+      riders.findNext();
+    }
+    return null;
   }
 
   public LinkedList<IRider> findByName(String fullName){
+    LinkedList<IRider> nameList = new LinkedList<IRider>();
+    
+    if(riders.empty() || fullName == null)
+      return null;
+    
+    riders.findFirst();
 
+    while(riders.current != null){
+      if(fulName.equals(riders.current.data.getName())){
+        nameList.insert(riders.current.data);
+      }
+      riders.findNext();
+    }
+
+    return nameList;
   }
 
   public IRider findByEmail(String email){
+    if(riders.empty() || email == null)
+      return null;
 
+    riders.findFirst();
+    while(riders.current != null){
+      if(email.equals(riders.current.data.getEmail())){
+        return riders.current.data;
+      }
+      riders.findNext();
+    }
+    return null;
   }
 
   public LinkedList<IRider> findByHomeCity(Strimg homeCity){
