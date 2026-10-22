@@ -12,30 +12,30 @@ public class RideList implements IRideList {
             return false;
 
         LinkedList<IRide> result = new LinkedList<IRide>();
-        boolean added = false;
 
-        if (!rides.empty()) {
-            rides.findFirst();
-
-            while (true) {
-                IRide current = rides.retrieve();
-
-                if (!added && ride.compareTo(current) < 0) {
-                    result.insert(ride);
-                    added = true;
-                }
-
-                result.insert(current);
-
-                if (rides.last())
-                    break;
-
-                rides.findNext();
-            }
+        if (rides.empty()) {
+            result.insert(ride);
+            rides = result;
+            return true;
         }
 
-        if (!added)
+        rides.findFirst();
+
+        while (!rides.last()
+                && ride.compareTo(rides.retrieve()) >= 0) {
+            result.insert(rides.retrieve());
+            rides.findNext();
+        }
+
+        if (ride.compareTo(rides.retrieve()) < 0)
             result.insert(ride);
+
+        result.insert(rides.retrieve());
+
+        while (!rides.last()) {
+            rides.findNext();
+            result.insert(rides.retrieve());
+        }
 
         rides = result;
         return true;
@@ -77,21 +77,17 @@ public class RideList implements IRideList {
 
         rides.findFirst();
 
-        while (true) {
+        while (!rides.last()) {
             result.insert(rides.retrieve());
-
-            if (rides.last())
-                break;
-
             rides.findNext();
         }
+
+        result.insert(rides.retrieve());
 
         return result;
     }
 
-    public LinkedList<IRide> findByPickupLocation(
-            String pickupLocation) {
-
+    public LinkedList<IRide> findByPickupLocation(String pickupLocation) {
         LinkedList<IRide> result = new LinkedList<IRide>();
 
         if (rides.empty())
@@ -99,17 +95,15 @@ public class RideList implements IRideList {
 
         rides.findFirst();
 
-        while (true) {
-            IRide ride = rides.retrieve();
-
-            if (ride.getPickupLocation().equals(pickupLocation))
-                result.insert(ride);
-
-            if (rides.last())
-                break;
+        while (!rides.last()) {
+            if (rides.retrieve().getPickupLocation().equals(pickupLocation))
+                result.insert(rides.retrieve());
 
             rides.findNext();
         }
+
+        if (rides.retrieve().getPickupLocation().equals(pickupLocation))
+            result.insert(rides.retrieve());
 
         return result;
     }
