@@ -29,7 +29,7 @@ public class Rider extends Person implements IRider{
     if(getId() < other.getId())
       return -1;
 
-    else if(getID() > other.getID())
+    else if(getId() > other.getId())
       return 1;
 
     else
