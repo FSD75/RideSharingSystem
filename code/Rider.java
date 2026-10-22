@@ -26,7 +26,7 @@ public class Rider extends Person implements IRider{
 
   @Override
   public int compareTo(IRider other){
-    if(getID() < other.getID())
+    if(getId() < other.getId())
       return -1;
 
     else if(getID() > other.getID())
@@ -37,7 +37,7 @@ public class Rider extends Person implements IRider{
   }
 
   @Override
-  public Stirng toString(){
+  public String toString(){
     return super.toString() + ", Email: " + email + ", homeCity: " + homeCity;
   }
 
