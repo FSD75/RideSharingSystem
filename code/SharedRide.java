@@ -32,31 +32,26 @@ public class SharedRide extends Ride implements ISharedRide {
     }
 
     public boolean removeParticipantById(int riderId) {
-        LinkedList<IRider> result = new LinkedList<IRider>();
-        boolean removed = false;
-
         if (participants.empty())
             return false;
 
         participants.findFirst();
 
-        while (true) {
-            IRider rider = participants.retrieve();
-
-            if (!removed && rider.getId() == riderId) {
-                removed = true;
-            } else {
-                result.insert(rider);
+        while (!participants.last()) {
+            if (participants.retrieve().getId() == riderId) {
+                participants.remove();
+                return true;
             }
-
-            if (participants.last())
-                break;
 
             participants.findNext();
         }
 
-        participants = result;
-        return removed;
+        if (participants.retrieve().getId() == riderId) {
+            participants.remove();
+            return true;
+        }
+
+        return false;
     }
 
     public boolean isEmpty() {
@@ -69,17 +64,14 @@ public class SharedRide extends Ride implements ISharedRide {
 
         participants.findFirst();
 
-        while (true) {
+        while (!participants.last()) {
             if (participants.retrieve().getId() == riderId)
                 return true;
-
-            if (participants.last())
-                break;
 
             participants.findNext();
         }
 
-        return false;
+        return participants.retrieve().getId() == riderId;
     }
 
     @Override
@@ -91,15 +83,12 @@ public class SharedRide extends Ride implements ISharedRide {
 
         participants.findFirst();
 
-        while (true) {
-            str += participants.retrieve().getName();
-
-            if (participants.last())
-                break;
-
-            str += ", ";
+        while (!participants.last()) {
+            str += participants.retrieve().getName() + ", ";
             participants.findNext();
         }
+
+        str += participants.retrieve().getName();
 
         return str;
     }
