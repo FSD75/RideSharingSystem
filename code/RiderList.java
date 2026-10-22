@@ -9,31 +9,43 @@ public class RiderList implements IRiderList{
   }
 
   public boolean add(IRider rider){
+    if(rider == null || findByEmail(rider.getEmail()) != null)
+     return false;
+    
     if(riders.empty()){
+      riders.findFirst();
       riders.insert(rider);
       count++;
       return true;
     }
+    
     Node<IRider> tmp = null;
     riders.findFirst();
-    while(riders.current != null){
-      if(riders.current.data.compareTo(rider) == 0){
-        return false;
-      }
-     
-      if(riders.current.data.compareTo(rider) == -1){
-        tmp = riders.current;
-        riders.findNext();
-      }
 
-       if(riders.current.data.compareTo(rider) == 1){
-        riders.current = tmp;
-        riders.insert(rider);
-        count++;
-        return true;
-      }
-    }
-  }
+    while(riders.current != null && riders.cuurent.data.compareTo(rider) == -1){
+       tmp = riders.current;
+       riders.findNext();
+     }
+
+    if(riders.current != null && riders.current.data.compareTo(rider) == 0)
+     return false;
+
+    if(tmp == null){
+     tmp = riders.current;
+     riders.insert(rider);
+     tmp.next = riders.current.next;
+     riders.current.next = riders.head;
+     riders.head = riders.current;
+   }
+     
+    else{
+     riders.current = tmp;
+     riders.insert(rider);
+   }
+    
+    count++;
+    return true;
+}
 
   public IRider findById(int riderId){
 
