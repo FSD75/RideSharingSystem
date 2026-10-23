@@ -138,7 +138,7 @@ public class DriverList implements IDriverList{
 
     drivers.remove();
     count--;
-    retuen true;
+    return true;
   }
 
   public int removeByName(String fullName){
