@@ -143,17 +143,56 @@ public class DriverList implements IDriverList{
 
   public int removeByName(String fullName){
     int num = 0;
-    
+    if(drivers.empty() || fullName == null)
+      return num;
 
+    drivers.findFirst();
+    while(!drivers.last()){
+      if(fullName.equals(drivers.retrieve().getName())){
+        drivers.remove();
+        count--;
+        num++;
+      }
+      else
+        drivers.findNext();
+    }
+    
+    if(fullName.equals(drivers.retrieve().getName())){
+        drivers.remove();
+        count--;
+        num++;
+      }
+    return num;
   }
 
   public int removeByVehicleType(VehicleType vehicleType){
+    int num = 0;
+    if(drivers.empty())
+      return num;
 
+    drivers.findFirst();
+    while(!drivers.last()){
+      if(drivers.retrieve().getVehicleType() == vehicleType){
+        drivers.remove();
+        count--;
+        num++;
+      }
+      else
+        drivers.findNext();
+    }
+
+     if(drivers.retrieve().getVehicleType() == vehicleType){
+        drivers.remove();
+        count--;
+        num++;
+     }
+    return num;
   }
 
   public int size(){
     return count;
   }
+
 
 
   
