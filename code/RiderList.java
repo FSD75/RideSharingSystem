@@ -17,17 +17,35 @@ public class RiderList implements IRiderList{
       count++;
       return true;
     }
+
+    if(findById(rider.getId()) != null)
+      return false;
     
-    Node<IRider> tmp = null;
+    IRider tmp = null;
     riders.findFirst();
 
-    while(riders.retrieve() != null && riders.retrieve().compareTo(rider) == -1){
-       tmp = riders.current;
-       riders.findNext();
-     }
+    while(riders.retrieve() != null){
+      if(riders.retrieve().getId() > rider.getId()){
+        tmp = riders.retrieve();
+        riders.update(rider);
+        riders.insert(tmp);
+        count++;
+        return true;
+      }
 
-    if(riders.retrieve().compareTo(rider) == 0)
-     return false;
+      if(riders.last()){
+        riders.insert(rider);
+        count++;
+        return true;
+      }
+
+      riders.findNext();
+    }
+
+    return false;
+  }
+
+    
 
     if(tmp == null){
      tmp = riders.current;
