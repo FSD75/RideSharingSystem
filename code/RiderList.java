@@ -51,12 +51,17 @@ public class RiderList implements IRiderList{
       return null;
     
     riders.findFirst();
-    while(riders.retrieve() != null){
+    
+    while(!riders.last()){
       if(riders.retrieve().getId() == riderId){
         return riders.retrieve();
       }
       riders.findNext();
     }
+
+    if(riders.retrieve().getId() == riderId)
+        return riders.retrieve();
+      
     return null;
   }
 
@@ -68,12 +73,15 @@ public class RiderList implements IRiderList{
     
     riders.findFirst();
 
-    while(riders.retrieve() != null){
+    while(!riders.last()){
       if(fullName.equals(riders.retrieve().getName())){
         nameList.insert(riders.retrieve());
       }
       riders.findNext();
     }
+
+    if(fullName.equals(riders.retrieve().getName()))
+        nameList.insert(riders.retrieve());
 
     return nameList;
   }
@@ -84,12 +92,16 @@ public class RiderList implements IRiderList{
 
     riders.findFirst();
     
-    while(riders.retrieve() != null){
+    while(!riders.last()){
       if(email.equals(riders.retrieve().getEmail())){
         return riders.retrieve();
       }
       riders.findNext();
     }
+
+    if(email.equals(riders.retrieve().getEmail()))
+        return riders.retrieve();
+
     return null;
   }
 
@@ -101,12 +113,16 @@ public class RiderList implements IRiderList{
     
     riders.findFirst();
     
-    while(riders.retrieve() != null){
+    while(!riders.last()){
       if(homeCity.equals(riders.retrieve().getHomeCity())){
         cityList.insert(riders.retrieve());
       }
       riders.findNext();
     }
+
+    if(homeCity.equals(riders.retrieve().getHomeCity()))
+        cityList.insert(riders.retrieve());
+      
     return cityList;
   }
 
@@ -137,20 +153,25 @@ public class RiderList implements IRiderList{
     if(riders.empty() || fullName == null)
       return num;
 
-    boolean isRemoved = false;
     riders.findFirst();
     
-    while(riders.retrieve() != null){
+    while(!riders.last()){
       if(fullName.equals(riders.retrieve().getName())){
         riders.remove();
-        isRemoved = true;
         count--;
         num++;
       }
-      if(!isRemoved)
+      else{
         riders.findNext();
-      isRemoved = false;
+      }
     }
+
+     if(fullName.equals(riders.retrieve().getName())){
+        riders.remove();
+        count--;
+        num++;
+      }
+    
     return num;
   }
 
@@ -159,20 +180,27 @@ public class RiderList implements IRiderList{
     if(riders.empty() || homeCity == null)
       return num;
 
-    boolean isRemoved = false;
     riders.findFirst();
     
-    while(riders.retrieve() != null){
+    while(!riders.last()){
       if(homeCity.equals(riders.retrieve().getHomeCity())){
         riders.remove();
         isRemoved = true;
         count--;
         num++;
       }
-      if(!isRemoved)
+      else{
         riders.findNext();
-      isRemoved = false;
+      }
     }
+
+    if(homeCity.equals(riders.retrieve().getHomeCity())){
+        riders.remove();
+        isRemoved = true;
+        count--;
+        num++;
+      }
+    
     return num;
   }
 
