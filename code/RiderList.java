@@ -185,7 +185,6 @@ public class RiderList implements IRiderList{
     while(!riders.last()){
       if(homeCity.equals(riders.retrieve().getHomeCity())){
         riders.remove();
-        isRemoved = true;
         count--;
         num++;
       }
@@ -196,7 +195,6 @@ public class RiderList implements IRiderList{
 
     if(homeCity.equals(riders.retrieve().getHomeCity())){
         riders.remove();
-        isRemoved = true;
         count--;
         num++;
       }
