@@ -44,25 +44,7 @@ public class RiderList implements IRiderList{
 
     return false;
   }
-
-    
-
-    if(tmp == null){
-     tmp = riders.current;
-     riders.insert(rider);
-     tmp.next = riders.current.next;
-     riders.current.next = riders.head;
-     riders.head = riders.current;
-   }
-     
-    else{
-     riders.current = tmp;
-     riders.insert(rider);
-   }
-    
-    count++;
-    return true;
-}
+  
 
   public IRider findById(int riderId){
     if(riders.empty())
