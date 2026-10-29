@@ -1,93 +1,68 @@
+public class LinkedList<T> implements List<T> {
 
-public class LinkedList<T>  {
+    private Node<T> head;
+    private Node<T> current;
 
-	public Node<T> head;
-	public Node<T> current;
+    public LinkedList() {
+        head = current = null;
+    }
 
-	public LinkedList() {
-		head = current = null;
-	}
+    public boolean empty() {
+        return head == null;
+    }
 
-	public boolean empty() {
-		return head == null;
-	}
+    public boolean last() {
+        return current.next == null;
+    }
 
-	public boolean full() {
-		return false;
-	}
+    public boolean full() {
+        return false;
+    }
 
-	public boolean last() {
-		return current.next == null;
-	}
+    public void insert(T val) {
+        Node<T> tmp;
 
-	public void findFirst() {
+        if (empty()) {
+            current = head = new Node<T>(val);
+        } else {
+            tmp = current.next;
+            current.next = new Node<T>(val);
+            current = current.next;
+            current.next = tmp;
+        }
+    }
 
-		current = head;
-	}
+    public void findFirst() {
+        current = head;
+    }
 
-	public void findNext() {
-		current = current.next;
-	}
+    public void findNext() {
+        current = current.next;
+    }
 
-	public T retrieve() {
-		return current.data;
-	}
+    public T retrieve() {
+        return current.data;
+    }
 
-	public void update(T var) {
-		current.data = var;
-	}
+    public void update(T val) {
+        current.data = val;
+    }
 
-	public void insert(T var) {
-		Node<T> tmp;
+    public void remove() {
+        if (current == head) {
+            head = head.next;
+        } else {
+            Node<T> tmp = head;
 
-		if (empty()) {
-			current = head = new Node<T>(var);
-		}
+            while (tmp.next != current)
+                tmp = tmp.next;
 
-		else {
+            tmp.next = current.next;
+        }
 
-			tmp = current;
-			current.next = new Node<T>(var);
-			current = current.next;
-			tmp.next = current;
-
-		}
-
-	}
-
-	public void remove() {
-		if (head == current)
-			head = head.next;
-
-		else {
-			Node<T> tmp;
-			tmp = head;
-			while (tmp.next != current)
-				tmp = tmp.next;
-			tmp.next = current.next;
-
-		}
-		if (current.next == null)
-			current = head;
-		else
-			current = current.next;
-	}
-
-	public boolean serach(T e) {
-
-		findFirst();
-		if (!(empty())) {
-
-			while (!last()) {
-				if (retrieve().equals(e)) {
-					return true;
-				}
-				findNext();
-
-			}
-		}
-		return false;
-
-	}
-
+        if (current.next == null)
+            current = head;
+        else
+            current = current.next;
+    }
 }
