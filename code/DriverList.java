@@ -1,14 +1,14 @@
-public class DriverList implements IDriverList{
-
+public class DriverList implements IDriverList{ // Class DriverList implementing IDriverList.
+  // IDriverList's attributes.
   private LinkedList<IDriver> drivers;
   private int count;
 
-  public DriverList(){
+  public DriverList(){ // Initializing an empty dirver list.
     drivers = new LinkedList<IDriver>();
     count = 0;
   }
 
-  public boolean add(IDriver driver){
+  public boolean add(IDriver driver){ // Adds a driver to the list if possible.
     if(driver == null || findByVehiclePlate(driver.getVehiclePlate()) != null)
       return false;
 
@@ -46,7 +46,7 @@ public class DriverList implements IDriverList{
   }
 
   
-  public IDriver findById(int driverId){
+  public IDriver findById(int driverId){ // Finding a driver by ID.
     if(drivers.empty())
       return null;
 
@@ -63,7 +63,7 @@ public class DriverList implements IDriverList{
     return null;
   }
 
-  public LinkedList<IDriver> findByName(String fullName){
+  public LinkedList<IDriver> findByName(String fullName){ // Returns all drivers whose full names match exactly.
     LinkedList<IDriver> nameList = new LinkedList<IDriver>();
     if(drivers.empty() || fullName == null)
       return nameList;
@@ -83,7 +83,7 @@ public class DriverList implements IDriverList{
     return nameList;
   }
 
-  public IDriver findByVehiclePlate(String vehiclePlate){
+  public IDriver findByVehiclePlate(String vehiclePlate){ // Finds a driver by an exact vehicle plate match.
     if(drivers.empty() || vehiclePlate == null)
       return null;
     drivers.findFirst();
@@ -100,7 +100,7 @@ public class DriverList implements IDriverList{
     return null;
   }
 
-  public LinkedList<IDriver> findByVehicleType(VehicleType vehicleType){
+  public LinkedList<IDriver> findByVehicleType(VehicleType vehicleType){ // Returns all drivers with the requested vehicle type.
     LinkedList<IDriver> typeList = new LinkedList<IDriver>();
     if(drivers.empty())
       return typeList;
@@ -119,11 +119,11 @@ public class DriverList implements IDriverList{
     return typeList;
   }
 
-  public LinkedList<IDriver> getAll(){
+  public LinkedList<IDriver> getAll(){ // Returns all drivers in the list.
     return drivers;
   }
 
-  public boolean removeById(int driverId){
+  public boolean removeById(int driverId){ // Removes a driver by ID.
     if(findById(driverId) == null)
       return false;
 
@@ -132,7 +132,7 @@ public class DriverList implements IDriverList{
     return true;
   }
 
-  public boolean removeByVehiclePlate(String vehiclePlate){
+  public boolean removeByVehiclePlate(String vehiclePlate){ // Removes the driver with the requested vehicle plate.
     if(findByVehiclePlate(vehiclePlate) == null)
       return false;
 
@@ -141,7 +141,7 @@ public class DriverList implements IDriverList{
     return true;
   }
 
-  public int removeByName(String fullName){
+  public int removeByName(String fullName){ // Removes every driver whose full name matches exactly and returns the number of removed drivers.
     int num = 0;
     if(drivers.empty() || fullName == null)
       return num;
@@ -165,7 +165,7 @@ public class DriverList implements IDriverList{
     return num;
   }
 
-  public int removeByVehicleType(VehicleType vehicleType){
+  public int removeByVehicleType(VehicleType vehicleType){ // Removes every driver by vehicle type and returns the number of removed drivers.
     int num = 0;
     if(drivers.empty())
       return num;
@@ -189,7 +189,7 @@ public class DriverList implements IDriverList{
     return num;
   }
 
-  public int size(){
+  public int size(){ // Returns the number of drivers in the list.
     return count;
   }
 
