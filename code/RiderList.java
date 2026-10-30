@@ -1,14 +1,14 @@
-public class RiderList implements IRiderList{
-
+public class RiderList implements IRiderList{ // Class RiderList implementing IRiderList.
+  // IDriverList's attributes.
   private LinkedList<IRider> riders;
   private int count;
 
-  public RiderList(){
+  public RiderList(){ // Initializing an empty rider list.
     riders = new LinkedList<IRider>();
     count = 0;
   }
 
-  public boolean add(IRider rider){
+  public boolean add(IRider rider){ // Adds a rider to the list if possible.
     if(rider == null || findByEmail(rider.getEmail()) != null)
      return false;
     
@@ -46,7 +46,7 @@ public class RiderList implements IRiderList{
   }
   
 
-  public IRider findById(int riderId){
+  public IRider findById(int riderId){ // Finding a rider by ID.
     if(riders.empty())
       return null;
     
@@ -65,7 +65,7 @@ public class RiderList implements IRiderList{
     return null;
   }
 
-  public LinkedList<IRider> findByName(String fullName){
+  public LinkedList<IRider> findByName(String fullName){ // Returns all riders whose full names match exactly.
     LinkedList<IRider> nameList = new LinkedList<IRider>();
     
     if(riders.empty() || fullName == null)
@@ -86,7 +86,7 @@ public class RiderList implements IRiderList{
     return nameList;
   }
 
-  public IRider findByEmail(String email){
+  public IRider findByEmail(String email){ // Finds a rider by an exact email match.
     if(riders.empty() || email == null)
       return null;
 
@@ -105,7 +105,7 @@ public class RiderList implements IRiderList{
     return null;
   }
 
-  public LinkedList<IRider> findByHomeCity(String homeCity){
+  public LinkedList<IRider> findByHomeCity(String homeCity){ // Returns all riders with the requested home city.
     LinkedList<IRider> cityList = new LinkedList<IRider>();
     
     if(riders.empty() || homeCity == null)
@@ -126,7 +126,7 @@ public class RiderList implements IRiderList{
     return cityList;
   }
 
-  public LinkedList<IRider> getAll(){
+  public LinkedList<IRider> getAll(){ // Returns all riders in the list.
     return riders;
   }
 
@@ -139,7 +139,7 @@ public class RiderList implements IRiderList{
     return true;
   }
 
-  public boolean removeByEmail(String email){
+  public boolean removeByEmail(String email){ // Removes the rider with the requested email.
     if(findByEmail(email) == null)
       return false;
 
@@ -148,7 +148,7 @@ public class RiderList implements IRiderList{
     return true;
   }
 
-  public int removeByName(String fullName){
+  public int removeByName(String fullName){ // Removes every rider whose full name matches exactly and returns the number of removed riders.
     int num = 0;
     if(riders.empty() || fullName == null)
       return num;
@@ -175,7 +175,7 @@ public class RiderList implements IRiderList{
     return num;
   }
 
-  public int removeByHomeCity(String homeCity){
+  public int removeByHomeCity(String homeCity){ // Removes every rider by home city and returns the number of removed riders.
     int num = 0;
     if(riders.empty() || homeCity == null)
       return num;
@@ -202,7 +202,7 @@ public class RiderList implements IRiderList{
     return num;
   }
 
-  public int size(){
+  public int size(){ // Returns  the number of riders in the list.
     return count;
   }
 
